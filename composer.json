@@ -1,0 +1,20 @@
+{
+    "name": "mhndev/darmanet",
+    "type": "library",
+    "description": "library for darmanet",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Majid Abdolhosseini",
+            "email": "majid8911303@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "mhndev\\darmanet\\": "src/" }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^6.3"
+    }
+}
