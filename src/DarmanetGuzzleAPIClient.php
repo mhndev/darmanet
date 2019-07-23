@@ -22,6 +22,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
            'disease_list_uri'            => '/disease',
            'plan_list_uri'               => '/plan',
            'body_part_list_uri'          => '/bodyPart',
+           'province_list_uri'           => '/Province',
+           'city_list_uri'               => '/Cities',
            'enquiry_for_single_plan_uri' => '/inquery‬‬',
            'enquiry_for_all_plans_uri'   => '/inquery‬‬/plans',
            'issue_uri'                   => '/',
@@ -75,6 +77,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *      'disease_list_uri'            => '',
      *      'plan_list_uri'               => '',
      *      'body_part_list_uri'          => '',
+     *      'province_list_uri'           => '',
+     *      'city_list_uri'               => '',
      *      'enquiry_for_single_plan_uri' => '',
      *      'enquiry_for_all_plans_uri'   => '',
      *      'issue_uri'                   => '',
@@ -222,6 +226,67 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @throws InvalidFunctionException
      */
     function bodyPartList()
+    {
+        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
+
+        $response = $this->http_client->request(
+            'GET',
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
+            [
+                'headers' => $headers,
+                'http_errors' => false
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+
+    /**
+     *
+     *   curl -X GET \
+     *       'http://185.208.175.77/Babimam_Test/api/v1/Province?=' \
+     *       -H 'Accept-Encoding: gzip, deflate' \
+     *       -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Connection: keep-alive' \
+     *       -H 'Host: 185.208.175.77' \
+     *       -H 'cache-control: no-cache'
+     *
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidFunctionException
+     */
+    function provinceList()
+    {
+        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
+
+        $response = $this->http_client->request(
+            'GET',
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
+            [
+                'headers' => $headers,
+                'http_errors' => false
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+
+    /**
+     *   curl -X GET \
+     *       'http://185.208.175.77/Babimam_Test/api/v1/Cities?=' \
+     *       -H 'Accept-Encoding: gzip, deflate' \
+     *       -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Cache-Control: no-cache' \
+     *       -H 'Connection: keep-alive' \
+     *       -H 'Host: 185.208.175.77'
+     *
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidFunctionException
+     */
+    function cityList()
     {
         $headers = ['Authorization' => $this->getAuthorizationHeader() ];
 

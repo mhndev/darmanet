@@ -59,13 +59,22 @@ class UrlGenerator
                 return $this->config['body_part_list_uri'] ?? $this->default_config['body_part_list_uri'];
                 break;
 
-            case 'doEnquiryForSinglePlan':
-                return $this->config['enquiry_for_single_plan_uri'] ?? $this->default_config['enquiry_for_single_plan_uri'];
+            case 'provinceList':
+                return $this->config['province_list_uri'] ?? $this->default_config['province_list_uri'];
+                break;
+
+            case 'cityList':
+                return $this->config['city_list_uri'] ?? $this->default_config['city_list_uri'];
                 break;
 
             case 'doEnquiryForAllPlans':
                 return $this->config['enquiry_for_all_plans_uri'] ?? $this->default_config['enquiry_for_all_plans_uri'];
                 break;
+
+            case 'doEnquiryForSinglePlan':
+                return $this->config['enquiry_for_single_plan_uri'] ?? $this->default_config['enquiry_for_single_plan_uri'];
+                break;
+
 
             default:
                 throw new InvalidFunctionException;
