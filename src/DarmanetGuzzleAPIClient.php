@@ -4,6 +4,10 @@ namespace mhndev\darmanet;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use mhndev\darmanet\Exception\InvalidFunctionException;
+use JsonException;
+use mhndev\darmanet\Exception\InvalidIPException;
+use mhndev\darmanet\Exception\UnknownException;
+use Exception;
 
 /**
  * Class DarmanetAPIClient
@@ -25,7 +29,7 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
            'province_list_uri'           => '/Province',
            'city_list_uri'               => '/Cities',
            'enquiry_for_single_plan_uri' => '/inquery‬‬',
-           'enquiry_for_all_plans_uri'   => '/inquery‬‬/plans',
+           'enquiry_for_all_plans_uri'   => '/Inquery‬‬/plans',
            'issue_uri'                   => '/',
     ];
 
@@ -122,7 +126,26 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             ['auth' => [$this->username, $this->password], 'http_errors' => false ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
     }
 
 
@@ -148,13 +171,37 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function diseaseList()
     {
+        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
+
         $response = $this->http_client->request(
             'GET',
             $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            ['auth' => [$this->username, $this->password], 'http_errors' => false ]
+            [
+                'headers' => $headers,
+                'http_errors' => false
+            ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
     }
 
 
@@ -201,7 +248,26 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
     }
 
 
@@ -238,7 +304,26 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+            
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
     }
 
 
@@ -269,7 +354,26 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
     }
 
 
@@ -299,7 +403,26 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
     }
 
 
@@ -361,8 +484,25 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
-    }
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }    }
 
 
     /**
@@ -410,16 +550,34 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
         $this->validator->validateDoEnquiryParameters($parameters);
 
         $response = $this->http_client->request(
-            'GET',
+            'POST',
             $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
             [
                 'headers' => $headers,
-                'http_errors' => false
+                'http_errors' => false,
+                'json' => $parameters
             ]
         );
 
-        return json_decode($response->getBody()->getContents(), true);
-    }
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }    }
 
     /**
      * @param string $key
