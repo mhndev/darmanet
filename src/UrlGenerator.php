@@ -55,6 +55,10 @@ class UrlGenerator
                 return $this->config['plan_list_uri'] ?? $this->default_config['plan_list_uri'];
                 break;
 
+            case 'getPlanCovers':
+                return $this->config['plan_covers_uri'] ?? $this->default_config['plan_covers_uri'];
+                break;
+
             case 'bodyPartList':
                 return $this->config['body_part_list_uri'] ?? $this->default_config['body_part_list_uri'];
                 break;

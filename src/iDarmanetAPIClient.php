@@ -82,6 +82,173 @@ interface iDarmanetAPIClient
 
 
     /**
+     *
+     *
+     * curl request :
+     *
+     * curl -X POST \
+     *       http://185.208.175.77/Babimam_Test/api/v1/planCovers%E2%80%AC \
+     *       -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Content-Type: application/json' \
+     *       -H 'cache-control: no-cache' \
+     *       -d '{"planExIds": ["4634b989-25a9-4e78-934b-b7ceaa6763dc","a13b43ce-f660-4778-83f8-7ddc15074268"]}'
+     *
+     *
+     * @example response
+     *
+     * [
+            {
+                "planTitle": "مهر سامان",
+                "planExId": "4634b989-25a9-4e78-934b-b7ceaa6763dc",
+                "covers": [
+                        {
+                            "coverId": "4003b0a6-4d50-415d-95fd-169968360f78",
+                            "description": "بیمارستانی",
+                            "price": 30000000
+                        },
+                        {
+                            "coverId": "fbe743e5-2ac1-4fdc-abef-65cdc5f25133",
+                            "description": "اعمال جراحی مهم با احتساب بند 1",
+                            "price": 60000000
+                        },
+                        {
+                            "coverId": "8ed7d47d-fb36-42e2-bde3-2dd5fadc1737",
+                            "description": "پاراکلینیکی گروه اول",
+                            "price": 3000000
+                        },
+                        {
+                            "coverId": "465cde7e-ac9d-4a07-a3e7-d752f363c353",
+                            "description": "پاراکلینیکی گروه دوم",
+                            "price": 1500000
+                        },
+                        {
+                            "coverId": "4af8ebc2-6eeb-4ce6-891b-0d682cfb7cd2",
+                            "description": "جراحی های مجاز سرپایی",
+                            "price": 1500000
+                        },
+                        {
+                            "coverId": "afb6daf7-5f05-4b42-9f43-3169d4d5a037",
+                            "description": "خدمات آزمایشگاهی",
+                            "price": 1000000
+                        },
+                        {
+                            "coverId": "4ef88381-c81b-4b18-9a95-d84ee8d1ca13",
+                            "description": "جبران هزینه های آمبولانس شهری و بین شهری",
+                            "price": 2000000
+                        },
+                        {
+                            "coverId": "39f3a3a3-7986-417a-9a5b-8142e8b17cee",
+                            "description": "زایمان",
+                            "price": 15000000
+                        },
+                        {
+                            "coverId": "f4cc0360-bf7f-444f-a0e2-b1e30f0586b6",
+                            "description": "ویزیت و دارو",
+                            "price": 1000000
+                        },
+                        {
+                            "coverId": "c246ed7e-7cf0-4838-bac0-bffd9c6500b2",
+                            "description": "دندانپزشکی",
+                            "price": 1000000
+                        },
+                        {
+                            "coverId": "6772baa7-9bd4-48a3-8226-bef162803ef5",
+                            "description": "نازایی",
+                            "price": 15000000
+                        },
+                        {
+                            "coverId": "c1dac4cc-09d5-442e-a357-a98f2b96679e",
+                            "description": "رفع عیوب انکساری دو چشم",
+                            "price": 6000000
+                        },
+                        {
+                            "coverId": "27e0c441-f831-457c-a365-2acb559e999f",
+                            "description": "سمعک",
+                            "price": 1500000
+                        }
+                ]
+            },
+            {
+                "planTitle": "وصال سامان",
+                "planExId": "a13b43ce-f660-4778-83f8-7ddc15074268",
+                "covers": [
+                        {
+                            "coverId": "4003b0a6-4d50-415d-95fd-169968360f78",
+                            "description": "بیمارستانی",
+                            "price": 150000000
+                        },
+                        {
+                            "coverId": "fbe743e5-2ac1-4fdc-abef-65cdc5f25133",
+                            "description": "اعمال جراحی مهم با احتساب بند 1",
+                            "price": 300000000
+                        },
+                        {
+                            "coverId": "8ed7d47d-fb36-42e2-bde3-2dd5fadc1737",
+                            "description": "پاراکلینیکی گروه اول",
+                            "price": 15000000
+                        },
+                        {
+                            "coverId": "465cde7e-ac9d-4a07-a3e7-d752f363c353",
+                            "description": "پاراکلینیکی گروه دوم",
+                            "price": 7500000
+                        },
+                        {
+                            "coverId": "4af8ebc2-6eeb-4ce6-891b-0d682cfb7cd2",
+                            "description": "جراحی های مجاز سرپایی",
+                            "price": 10000000
+                        },
+                        {
+                            "coverId": "afb6daf7-5f05-4b42-9f43-3169d4d5a037",
+                            "description": "خدمات آزمایشگاهی",
+                            "price": 7500000
+                        },
+                        {
+                            "coverId": "4ef88381-c81b-4b18-9a95-d84ee8d1ca13",
+                            "description": "جبران هزینه های آمبولانس شهری و بین شهری",
+                            "price": 5000000
+                        },
+                        {
+                            "coverId": "39f3a3a3-7986-417a-9a5b-8142e8b17cee",
+                            "description": "زایمان",
+                            "price": 50000000
+                        },
+                        {
+                            "coverId": "f4cc0360-bf7f-444f-a0e2-b1e30f0586b6",
+                            "description": "ویزیت و دارو",
+                            "price": 8000000
+                        },
+                        {
+                            "coverId": "c246ed7e-7cf0-4838-bac0-bffd9c6500b2",
+                            "description": "دندانپزشکی",
+                            "price": 10000000
+                        },
+                        {
+                            "coverId": "6772baa7-9bd4-48a3-8226-bef162803ef5",
+                            "description": "نازایی",
+                            "price": 50000000
+                        },
+                        {
+                            "coverId": "c1dac4cc-09d5-442e-a357-a98f2b96679e",
+                            "description": "رفع عیوب انکساری دو چشم",
+                            "price": 20000000
+                        },
+                        {
+                            "coverId": "27e0c441-f831-457c-a365-2acb559e999f",
+                            "description": "سمعک",
+                            "price": 6000000
+                        }
+                ]
+            }
+    ]
+     *
+     * @param array $plan_ids => @example : ["a13b43ce-f660-4778-83f8-7ddc15074268", "4634b989-25a9-4e78-934b-b7ceaa6763dc" ]
+     *
+     * @return array
+     */
+    function getPlanCovers(array $plan_ids);
+
+
+    /**
      * [
      *       {
      *           "id": "2a295df3-3cd8-41d0-a9d8-df806400d537",
@@ -111,7 +278,7 @@ interface iDarmanetAPIClient
      *
      * curl -X POST \
      *       'http://{{base_url}}/inquery%E2%80%AC%E2%80%AC' \
-     *       -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
      *       -H 'Content-Type: application/json' \
      *       -H 'cache-control: no-cache' \
      *       -d '{
@@ -151,7 +318,7 @@ interface iDarmanetAPIClient
      *
      * curl -X POST \
      *   'http://{{base_url}}/Inquery/plans' \
-     *   -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *   -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
      *   -H 'Content-Type: application/json' \
      *   -H 'cache-control: no-cache' \
      *   -d '{

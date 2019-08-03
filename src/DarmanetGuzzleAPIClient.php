@@ -25,6 +25,7 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
            'current_issuance_uri'        => '/currentInsurance',
            'disease_list_uri'            => '/disease',
            'plan_list_uri'               => '/plan',
+           'plan_covers_uri'             => '/planCovers‬',
            'body_part_list_uri'          => '/bodyPart',
            'province_list_uri'           => '/Province',
            'city_list_uri'               => '/Cities',
@@ -102,8 +103,10 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
     /**
      *
      * @return array
-     * @throws InvalidFunctionException
      * @throws GuzzleException
+     * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      * @example return data
      *
      * [
@@ -116,7 +119,6 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *           "title": "بیمه تامین اجتماعی"
      *       }
      * ]
-     *
      */
     function currentIssuance()
     {
@@ -168,6 +170,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      */
     function diseaseList()
     {
@@ -234,6 +238,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      */
     function planList()
     {
@@ -272,6 +278,54 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
 
 
     /**
+     * @inheritDoc
+     *
+     * @param array $plan_ids
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
+     */
+    public function getPlanCovers(array $plan_ids)
+    {
+        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
+
+        $response = $this->http_client->request(
+            'POST',
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
+            [
+                'headers' => $headers,
+                'http_errors' => false,
+                'json' => ['planExIds' => $plan_ids ]
+            ]
+        );
+
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
+    }
+
+
+
+    /**
      * [
      *       {
      *           "id": "2a295df3-3cd8-41d0-a9d8-df806400d537",
@@ -290,6 +344,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      */
     function bodyPartList()
     {
@@ -332,7 +388,7 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *   curl -X GET \
      *       'http://185.208.175.77/Babimam_Test/api/v1/Province?=' \
      *       -H 'Accept-Encoding: gzip, deflate' \
-     *       -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
      *       -H 'Connection: keep-alive' \
      *       -H 'Host: 185.208.175.77' \
      *       -H 'cache-control: no-cache'
@@ -340,6 +396,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      */
     function provinceList()
     {
@@ -381,7 +439,7 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *   curl -X GET \
      *       'http://185.208.175.77/Babimam_Test/api/v1/Cities?=' \
      *       -H 'Accept-Encoding: gzip, deflate' \
-     *       -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
      *       -H 'Cache-Control: no-cache' \
      *       -H 'Connection: keep-alive' \
      *       -H 'Host: 185.208.175.77'
@@ -389,6 +447,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      */
     function cityList()
     {
@@ -432,12 +492,14 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return void
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      * @example :
      * post request sample curl :
      *
      * curl -X POST \
      *       'http://{{base_url}}/inquery%E2%80%AC%E2%80%AC' \
-     *       -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *       -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
      *       -H 'Content-Type: application/json' \
      *       -H 'cache-control: no-cache' \
      *       -d '{
@@ -509,7 +571,7 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *
      * curl -X POST \
      *   'http://{{base_url}}/Inquery/plans' \
-     *   -H 'Authorization: basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
+     *   -H 'Authorization: Basic QHpLaUAxMjM6QFpLaT85ODAxITk4MDI+' \
      *   -H 'Content-Type: application/json' \
      *   -H 'cache-control: no-cache' \
      *   -d '{
@@ -534,6 +596,8 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      * @return void
      * @throws GuzzleException
      * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
      * @example return data 404- Bad request :
      *
      * {
@@ -541,7 +605,6 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *     "status": -1,
      *     "message": "BMI '30/4779662232421' برای سن '27' سال قابل قبول نیست."
      * }
-     *
      */
     function doEnquiryForAllPlans(array $parameters)
     {
@@ -577,7 +640,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
         }
         catch (Exception $e) {
             throw new UnknownException((string) $response->getBody());
-        }    }
+        }
+
+    }
 
     /**
      * @param string $key
@@ -597,8 +662,7 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
         $username = $this->username;
         $password = $this->password;
 
-        return "basic ".base64_encode($username.":".$password);
+        return "Basic ".base64_encode($username.":".$password);
     }
-
 
 }
