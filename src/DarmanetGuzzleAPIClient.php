@@ -122,32 +122,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function currentIssuance()
     {
-        $response = $this->http_client->request(
-            'GET',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            ['auth' => [$this->username, $this->password], 'http_errors' => false ]
+        return $this->doGetRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__)
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
@@ -175,37 +152,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function diseaseList()
     {
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'GET',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false
-            ]
+        return $this->doGetRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__)
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
@@ -243,37 +192,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function planList()
     {
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'GET',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false
-            ]
+        return $this->doGetRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__)
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
@@ -289,38 +210,10 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     public function getPlanCovers(array $plan_ids)
     {
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'POST',
+        return $this->doPostRequest(
             $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false,
-                'json' => ['planExIds' => $plan_ids ]
-            ]
+            ['planExIds' => $plan_ids]
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
@@ -349,37 +242,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function bodyPartList()
     {
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'GET',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false
-            ]
+        return $this->doGetRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__)
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-            
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
@@ -393,6 +258,24 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *       -H 'Host: 185.208.175.77' \
      *       -H 'cache-control: no-cache'
      *
+     * @example sample api response :
+     *
+     * [
+     *       {
+     *           "id": "b245eacd-8ba3-4c57-b018-ad08da968a04",
+     *           "text": "آذربايجان شرقي"
+     *       },
+     *       {
+     *           "id": "5950634b-8a6f-4c52-a516-b80e7370e957",
+     *           "text": "آذربايجان غربي"
+     *       },
+     *       {
+     *           "id": "727ed6db-3635-4cf6-b203-bb6c0fe42458",
+     *           "text": "اردبيل"
+     *       }
+     *  ]
+     *
+     *
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
@@ -401,37 +284,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function provinceList()
     {
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'GET',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false
-            ]
+        return $this->doGetRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__)
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
@@ -444,6 +299,25 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *       -H 'Connection: keep-alive' \
      *       -H 'Host: 185.208.175.77'
      *
+     *
+     * @example sample api response
+     *
+     * [
+     *       {
+     *           "id": "9fc2926b-533e-4860-901f-170480bc6ff3",
+     *           "text": "آذرشهر"
+     *       },
+     *       {
+     *           "id": "90cbb6fa-e8dd-4e0f-b4cf-9eda403f0dfd",
+     *           "text": "تيمورلو"
+     *       },
+     *       {
+     *           "id": "54ad5326-9929-472a-a59e-7552de7a0de1",
+     *           "text": "ممقان"
+     *       }
+     *  ]
+     *
+     *
      * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
@@ -452,44 +326,16 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      */
     function cityList()
     {
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'GET',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false
-            ]
+        return $this->doGetRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__)
         );
-
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }
-
     }
 
 
     /**
      *
      * @param array $parameters
-     * @return void
+     * @return array
      * @throws GuzzleException
      * @throws InvalidFunctionException
      * @throws InvalidIPException
@@ -535,36 +381,12 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
     {
         $this->validator->validateDoEnquiryParameters($parameters);
 
-        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
-
-        $response = $this->http_client->request(
-            'GET',
+        return $this->doPostRequest(
             $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
-            [
-                'headers' => $headers,
-                'http_errors' => false
-            ]
+            $parameters
         );
 
-        try{
-            return json_decode(
-                $response->getBody()->getContents(),
-                $assoc = true,
-                $depth = 512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-        catch (JsonException $e) {
-
-            if((string) $response->getBody() == "error, Invalid IP.") {
-                throw new InvalidIPException;
-            }
-
-            else throw new UnknownException((string) $response->getBody());
-        }
-        catch (Exception $e) {
-            throw new UnknownException((string) $response->getBody());
-        }    }
+    }
 
 
     /**
@@ -593,32 +415,133 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
      *
      *
      * @param array $parameters
-     * @return void
+     * @return array
+     *
      * @throws GuzzleException
      * @throws InvalidFunctionException
      * @throws InvalidIPException
      * @throws UnknownException
-     * @example return data 404- Bad request :
+     *
+     * @example return data 404 - Bad request :
      *
      * {
      *     "priceList": null,
      *     "status": -1,
      *     "message": "BMI '30/4779662232421' برای سن '27' سال قابل قبول نیست."
      * }
+     *
+     *
+     * @example return data 200 - success :
+     *
+     * {
+     *       "priceList": [
+     *          {
+     *              "PlanTitle": "مهر سامان",
+     *              "Price": 10784151
+     *          },
+     *          {
+     *              "PlanTitle": "سروش سامان",
+     *              "Price": 13185652
+     *          },
+     *          {
+     *              "PlanTitle": "شمیم سامان",
+     *              "Price": 16224550
+     *          },
+     *          {
+     *              "PlanTitle": "وصال سامان",
+     *              "Price": 20104875
+     *          },
+     *          {
+     *              "PlanTitle": "عقیق سامان",
+     *              "Price": 24343287
+     *          }
+     *       ],
+     *       "status": 0,
+     *       "message": null
+     *  }
+     *
+     *
      */
     function doEnquiryForAllPlans(array $parameters)
     {
+        return $this->doPostRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
+            $parameters
+        )['priceList'];
+
+    }
+
+    /**
+     * @param string $key
+     * @return string
+     */
+    private function getConfig(string $key)
+    {
+        return $this->config[$key] ?? $this->default_config[$key];
+    }
+
+
+    /**
+     * @param string $uri
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidIPException
+     * @throws UnknownException
+     */
+    private function doGetRequest(string $uri)
+    {
         $headers = ['Authorization' => $this->getAuthorizationHeader() ];
 
-        $this->validator->validateDoEnquiryParameters($parameters);
+        $response = $this->http_client->request(
+            'GET',
+            $uri,
+            [
+                'headers' => $headers,
+                'http_errors' => false
+            ]
+        );
+
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+    }
+
+
+    /**
+     * @param string $uri
+     * @param $request_json_array
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidIPException
+     * @throws UnknownException
+     */
+    private function doPostRequest(string $uri, $request_json_array)
+    {
+        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
 
         $response = $this->http_client->request(
             'POST',
-            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
+            $uri,
             [
                 'headers' => $headers,
                 'http_errors' => false,
-                'json' => $parameters
+                'json' => $request_json_array
             ]
         );
 
@@ -642,15 +565,6 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             throw new UnknownException((string) $response->getBody());
         }
 
-    }
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    private function getConfig(string $key)
-    {
-        return $this->config[$key] ?? $this->default_config[$key];
     }
 
 
