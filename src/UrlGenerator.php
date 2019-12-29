@@ -79,6 +79,18 @@ class UrlGenerator
                 return $this->config['enquiry_for_single_plan_uri'] ?? $this->default_config['enquiry_for_single_plan_uri'];
                 break;
 
+            case 'doIssue':
+                return $this->config['issue_uri'] ?? $this->default_config['issue_uri'];
+                break;
+
+            case 'doUpload':
+                return $this->config['upload_uri'] ?? $this->default_config['upload_uri'];
+                break;
+
+            case 'doPolicy':
+                return $this->config['policy_uri'] ?? $this->default_config['policy_uri'];
+                break;
+
 
             default:
                 throw new InvalidFunctionException;

@@ -31,7 +31,9 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
            'city_list_uri'               => '/Cities',
            'enquiry_for_single_plan_uri' => '/inquery‬‬',
            'enquiry_for_all_plans_uri'   => '/Inquery‬‬/plans',
-           'issue_uri'                   => '/',
+           'issue_uri'                   => '/issuing/add',
+           'upload_uri'                  => '/issuing/upload',
+           'policy_uri'                  => '/‫‪GetPolicyNoList‬‬',
     ];
 
     /**
@@ -469,6 +471,22 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
             $parameters
         )['priceList'];
 
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidFunctionException
+     * @throws InvalidIPException
+     * @throws UnknownException
+     */
+    public function doIssue(array $parameters)
+    {
+        return $this->doPostRequest(
+            $this->getConfig('base_uri').$this->url_generator->getUrl(__FUNCTION__),
+            $parameters
+        );
     }
 
     /**
