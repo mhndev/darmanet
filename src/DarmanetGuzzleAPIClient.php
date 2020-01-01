@@ -490,6 +490,67 @@ class DarmanetGuzzleAPIClient implements iDarmanetAPIClient
     }
 
     /**
+     * @param array $parameters
+     * @return array
+     * @throws InvalidIPException
+     * @throws UnknownException
+     */
+    public function doUpload(array $parameters)
+    {
+        $uri = $this->getConfig('base_uri') . '/issuing/upload';
+        $headers = ['Authorization' => $this->getAuthorizationHeader() ];
+
+        $data = [];
+        foreach ($parameters as $key => $parameter) {
+
+            if ($key === 'PackageExid') {
+                $data[] = [
+                    'name' => 'PackageExid',
+                    'contents' => $parameter
+                ];
+            } else {
+                $name = explode('.', $parameter['filename']);
+                $data[] = [
+                    'name' => $name[0],
+                    'contents' => $parameter['contents'],
+                    'filename' => $parameter['filename']
+                ];
+            }
+        }
+
+        $response = $this->http_client->request(
+            'POST',
+            $uri,
+            [
+                'headers' => $headers,
+                'http_errors' => false,
+                'multipart' => $data
+            ]
+        );
+
+        try{
+            return json_decode(
+                $response->getBody()->getContents(),
+                $assoc = true,
+                $depth = 512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+        catch (JsonException $e) {
+
+            if((string) $response->getBody() == "error, Invalid IP.") {
+                throw new InvalidIPException;
+            }
+
+            else throw new UnknownException((string) $response->getBody());
+        }
+        catch (Exception $e) {
+            throw new UnknownException((string) $response->getBody());
+        }
+
+    }
+
+    /**
      * @param string $key
      * @return string
      */
